@@ -43,7 +43,42 @@ Follow these steps to set up and run the project locally:
 1. Clone the Repository:
    ```bash
    git clone https://github.com/VignessBala/shoppee-partner.git
+
+2. Navigate to the Repository:
+   ```bash
    cd shoppee-partner
+   
+3. Install Dependencies:
+   ```bash
    npm install
-npm run dev
+   
+4. Run Project:
+   ```bash
+   npm run dev
+
+
+
+## What to Do as a User
+
+### Creating a User and Login
+- Before Login , click signup and create a user .
+- After signup as a user, Enter mail and password and click login to go to **dashboard**.
+  
+### Creating a Shopping List
+- Click the **"Add List"** button to create a new shopping list.
+- Enter a list name and click **"Save"**.
+
+### Managing Items
+- Add items to a list by entering the item name and quantity.
+- Mark items as **bought** or **unmark** them for tracking.
+
+### Searching for Lists
+- Use the search bar at the top to find specific shopping lists.
+
+### Profile Summary
+- Navigate to the **Profile** page to view total lists, items, and bought items.
+
+### Pagination
+- Use the pagination buttons to navigate through lists when the count exceeds 10 per page.
+
 
