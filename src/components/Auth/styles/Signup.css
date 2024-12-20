@@ -1,0 +1,103 @@
+.signup-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQA8gMBIgACEQEDEQH/xAAaAAEBAQEBAQEAAAAAAAAAAAAAAQIDBQQG/8QAJBABAQEAAgIBBAIDAAAAAAAAAAERAiESMUFRYXGBQqETkeH/xAAbAQADAQEAAwAAAAAAAAAAAAAAAQIDBAUGB//EACERAQEBAQACAgIDAQAAAAAAAAABAhEDEhMhMVEEQWEi/9oADAMBAAIRAxEAPwBbW/LqOfZ8uhFzK3q+XTKWlxNxGvI8mNhBxUxxrSJpD4LmLrU5MCUXLorMsWWBlYrNq2smcLRKsClJcAkWLoQBCLpoIDQABQXUBegOiKdATSABT5/8qeeuP57a48vht6vM6/j5k+nechzlaqeOa45S9ErNupv3EjSY7HTYa43liTlafB8Lt5L5MSKVjPWY68e2nPjW4hz7i0EoZlWIA60iaoZ1qGkSkQBgST20zPbQK0ACaLiLhWoujDFMT1PuyLgOq93mXrrslZm+Mv8ASzx+ena9v1JI6y+lvPIxdzfhztvz0njCeKavXSct/KW3WI379+xw9ZkS3VM6i4CvF48q6cbrlme8b49J0w8klb8sb48tY/BtRXJrPXZXLyrU5EwubF1E0hJVqMqGeq3okUkWimKGd0kiio6y1oAHTzsxSKE6IoF1z20/2LtAP+niSt299ftz47FnV6+Xc+gXLc5b1q+Nt2Xv7pxne/Led0nNq8qfn2T9L1/1ZPqTPWll69aX9rJPpv7XCrC6ZnDVzOlqEm6WdNTb9P2zI0THdXO1ZaiGGqsUhAx1VIRYllasVGoVrHWiKRU1ldEUikx1UMUAlvCRcI1hdZa8mpUAAzpAwNft/rx7OpEku7Iee+pP0s5feu579bqRZOWz+3Sye9Z4zfmLnxE1zbvTtV+MITG0lbTpYVY6T5X6nd6X57LrO6RZ6I1IXWetJIpixNc+tKsFkJlqkWGLCrG0xZFio6xtTGkUMrRYT2pM71FkWCUa3wxZDGp6KsNb6zi40DrP5GFayA6r5H5+TPs1mzY68uE3dJwn3eQ6+jXy9+048emvosyRpPXNvXazmLC+uz8EzqyLCerSFWOqvqnurm9rIhlaSKEDDVVYRSY2hFwwmWtLFkSe2k2sbSKKll0UAz72ixFkFGlCRZEsNcJfhpJO1JlpqKzK1Cc1+qfqAAdjyOcYvTty47L/AE5WY7pX0Hx7lT+LUSNSA9aLEkbn0PHC6w90s6akJGsTax1ozoi4YTK1cFMJjqpIpGpAytRVVFZUkXASysVYkUIp8qiAploiNQrWXk1z6VVglzUi37gVZ2fpP5OkjnrWz4BeTPZPpoY8gMvWvgrHLi2WOuV7tNccvHK1JtaxZxFqteQnHoxsxLD2ZwxcMCPYXFk7XAm1MMWARUwxQkaigEzsVYy0mpsShQ4rOFIjSajWZ/Q18JpCc+sdbjTnL26xLi889ftBpnkTDF9qlrN5JrNqpHkceL9t+QwHxfw5cMGzGzy/vWJxaxVBXVYxWgF1MMAJMCUIAAAACsVUAXqsEilYm4Kip0ODn0sXU0lLjO4aJWVJNxxqXtuc3ILjHfhzv8ut5sXlrIOQsfx8Z/C6mpQ+OmeNdEQ+K+KoApuKgAqAAAAAAIAAAAAABRAAAAFQFNqKCWdCgGdBAKkTRA2kVANT/9k=') no-repeat center center/cover;
+    font-family: 'Poppins', Arial, sans-serif;
+  }
+  
+  .signup-form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .signup-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .signup-input-group {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .signup-input {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 3px #007bff;
+  }
+  
+  .signup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .signup-button, .login-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .signup-button {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .signup-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-button {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .login-button:hover {
+    background-color: #5a6268;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 12px;
+    margin: 5px 0 10px;
+  }
+  
+  .loader {
+    border: 6px solid #f3f3f3; /* Light gray */
+    border-top: 6px solid #007bff; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
