@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles/Profile.css';
 
 const Profile = ({ user, shoppingLists }) => {
   const totalItems = shoppingLists.reduce((sum, list) => sum + list.items.length, 0);
@@ -9,24 +8,24 @@ const Profile = ({ user, shoppingLists }) => {
   );
 
   return (
-    <div className="profile-container">
-      <h1>Profile</h1>
-      <div className="profile-details">
-        <p><strong>Name:</strong> {user?.name}</p>
-        <p><strong>Email:</strong> {user?.email}</p>
+    <div className="max-w-4xl mx-auto my-5 p-5 bg-gray-100 rounded-lg shadow-md text-center font-sans">
+      <h1 className="text-2xl font-bold">Profile</h1>
+      <div className="mt-4 text-gray-800">
+        <p className="text-lg"><strong>Name:</strong> {user?.name}</p>
+        <p className="text-lg"><strong>Email:</strong> {user?.email}</p>
       </div>
-      <div className="bubble-container">
-        <div className="bubble bubble-lists">
-          <p>Total Lists</p>
-          <h2>{shoppingLists.length}</h2>
+      <div className="mt-8 flex flex-wrap justify-center gap-5">
+        <div className="w-36 h-36 rounded-full flex flex-col justify-center items-center text-white text-center font-bold shadow-lg animate-float bg-gradient-to-br from-pink-500 to-pink-400">
+          <p className="text-sm">Total Lists</p>
+          <h2 className="text-2xl">{shoppingLists.length}</h2>
         </div>
-        <div className="bubble bubble-items">
-          <p>Total Items</p>
-          <h2>{totalItems}</h2>
+        <div className="w-36 h-36 rounded-full flex flex-col justify-center items-center text-white text-center font-bold shadow-lg animate-float bg-gradient-to-br from-blue-500 to-blue-400">
+          <p className="text-sm">Total Items</p>
+          <h2 className="text-2xl">{totalItems}</h2>
         </div>
-        <div className="bubble bubble-bought">
-          <p>Bought Items</p>
-          <h2>{boughtItems}</h2>
+        <div className="w-36 h-36 rounded-full flex flex-col justify-center items-center text-white text-center font-bold shadow-lg animate-float bg-gradient-to-br from-teal-400 to-teal-300">
+          <p className="text-sm">Bought Items</p>
+          <h2 className="text-2xl">{boughtItems}</h2>
         </div>
       </div>
     </div>

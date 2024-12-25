@@ -24,14 +24,13 @@ const App = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current route
+  const location = useLocation();
 
   useEffect(() => {
     localStorage.setItem("shoppingLists", JSON.stringify(shoppingLists));
   }, [shoppingLists]);
 
   useEffect(() => {
-    // Disable scrolling on the login page
     if (location.pathname === "/") {
       document.body.style.overflow = "hidden";
     } else {
@@ -39,7 +38,7 @@ const App = () => {
     }
 
     return () => {
-      document.body.style.overflow = "auto"; // Reset on unmount
+      document.body.style.overflow = "auto";
     };
   }, [location.pathname]);
 
@@ -72,36 +71,84 @@ const App = () => {
     }
   };
 
+  const handleRippleEffect = (e) => {
+    const button = e.currentTarget;
+    const ripple = document.createElement("span");
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    ripple.className = "ripple";
+    button.appendChild(ripple);
+
+    setTimeout(() => {
+      ripple.remove();
+    }, 600); // Match duration with the CSS animation
+  };
+
   return (
-    <div className={`app-container ${isLoggedIn ? "with-sidebar" : ""}`}>
+    <div className={`flex h-screen ${isLoggedIn ? "" : "overflow-hidden"}`}>
       {isLoggedIn && (
-        <aside className="sidebar fixed-sidebar">
-          <h2>Menu</h2>
-          <ul>
-            <li className="menu-item">
-              <Link to="/profile">Profile</Link>
+        <aside className="w-64 bg-gray-100 shadow-md fixed h-full flex flex-col p-4">
+          <h2 className="text-xl font-bold mb-4">Menu</h2>
+          <ul className="space-y-4 flex-grow">
+            <li>
+              <div
+                className="ripple-container"
+                onClick={(e) => handleRippleEffect(e)}
+              >
+                <Link
+                  to="/profile"
+                  className="block bg-gray-200 rounded px-4 py-2 hover:bg-gray-300"
+                >
+                  Profile
+                </Link>
+              </div>
             </li>
-            <li className="menu-item">
-              <Link to="/shopping-lists">Shopping List</Link>
-            </li>
-            <li className="menu-item logout-container">
-              {loading ? (
-                <div className="loader"></div>
-              ) : (
-                <button onClick={handleLogout} className="logout-button">
-                  Logout
-                </button>
-              )}
-            </li>
-            <li className="menu-item">
-              <button onClick={handleDeleteData} className="delete-data-button">
-                Delete Data
-              </button>
+            <li>
+              <div
+                className="ripple-container"
+                onClick={(e) => handleRippleEffect(e)}
+              >
+                <Link
+                  to="/shopping-lists"
+                  className="block bg-gray-200 rounded px-4 py-2 hover:bg-gray-300"
+                >
+                  Shopping List
+                </Link>
+              </div>
             </li>
           </ul>
+          <div className="mt-auto space-y-4">
+            <button
+              onClick={handleDeleteData}
+              className="w-full bg-yellow-500 text-white font-bold py-2 rounded hover:bg-yellow-600"
+            >
+              Delete Data
+            </button>
+            {loading ? (
+              <div className="w-10 h-10 border-4 border-gray-300 border-t-red-500 rounded-full animate-spin mx-auto"></div>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-500 text-white font-bold py-2 rounded hover:bg-red-600"
+              >
+                Logout
+              </button>
+            )}
+          </div>
         </aside>
       )}
-      <main className="main-content">
+
+      <main
+        className={`flex-grow p-6 ${
+          isLoggedIn ? "ml-64" : ""
+        } overflow-y-auto bg-gray-50`}
+      >
         <Routes>
           <Route path="/" element={<Login setUser={handleLogin} />} />
           <Route path="/signup" element={<Signup />} />

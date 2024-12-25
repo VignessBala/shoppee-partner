@@ -1,10 +1,11 @@
+/* General Container */
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f7f9fc; /* Light background */
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -18,9 +19,18 @@ input[type="number"] {
   width: calc(100% - 22px);
   padding: 10px;
   margin: 5px 0;
-  border: 1px solid #ccc;
+  border: 1px solid #d0d7de;
   border-radius: 4px;
   font-size: 14px;
+  background-color: #fefefe;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Buttons Styling */
@@ -30,39 +40,46 @@ button {
   border: none;
   padding: 10px 15px;
   margin: 5px 0;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
 }
 
 button:hover {
   background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(41, 128, 185, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(41, 128, 185, 0.2);
 }
 
 /* Scrollable Table Container */
 .table-container {
   margin-top: 100px;
-  max-height: 400px; /* Define height for scrolling */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 400px;
+  overflow-y: auto;
   position: fixed;
-  width: 70%; /* Full width */
-  border-radius: 8px;
-  background-color: white; /* Ensure a solid background */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  width: 70%;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d0d7de;
 }
 
-/* Hide scrollbar for Webkit browsers (e.g., Chrome, Safari) */
 .table-container::-webkit-scrollbar {
-  display: none;
+  width: 8px;
 }
 
-/* Hide scrollbar for other browsers */
-.table-container {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 4px;
 }
 
-/* Table Styling */
 .table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -72,22 +89,16 @@ button:hover {
 .table-container table td {
   text-align: center;
   vertical-align: middle;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 12px;
+  border: 1px solid #e1e4e8;
 }
 
-/* Fixed Header Styling */
-.table-container table th {
-  position: sticky; /* Keeps headers fixed */
-  top: -25px; /* Aligns to the top of the container */
-  background-color: #f9f9f9; /* Solid background to avoid overlap */
-  z-index: 2; /* Ensures headers are on top */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for separation */
-}
+
 
 /* Row Styling */
 .table-container table td {
-  background-color: white; /* Solid background for rows */
+  background-color: white; /* Ensures solid background for rows */
+  z-index: 1; /* Lower than header */
 }
 
 /* Pagination */
@@ -100,18 +111,20 @@ button:hover {
 }
 
 .pagination button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  padding: 8px 12px;
+  border: 1px solid #007bff;
+  background-color: #fefefe;
   cursor: pointer;
-  transition: background-color 0.3s;
-  color: grey;
+  color: #007bff;
+  transition: all 0.3s;
+  border-radius: 4px;
 }
 
 .pagination button.active {
   background-color: #007bff;
   color: white;
   font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
 
 .pagination button:hover {
@@ -119,22 +132,25 @@ button:hover {
   color: white;
 }
 
-.pagination button:disabled {
-  color: black;
-}
-
 /* Add List Button */
 .add-list-button {
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 10px 20px;
-  background-color: #007bff;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
+  transition: all 0.3s;
+}
+
+.add-list-button:hover {
+  background: linear-gradient(135deg, #1e88e5, #1565c0);
+  box-shadow: 0 6px 12px rgba(30, 136, 229, 0.4);
+  transform: translateY(-2px);
 }
 
 /* Overlay */
@@ -144,13 +160,12 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
 }
 
-/* Side Form Styling */
 .side-form {
   background: white;
   padding: 20px;
@@ -158,19 +173,26 @@ button:hover {
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .side-form h2 {
   margin-bottom: 20px;
+  color: #2c3e50;
 }
 
 .side-form input {
   margin-bottom: 20px;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid #d0d7de;
   border-radius: 5px;
+}
+
+.side-form input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .form-actions {
@@ -178,56 +200,53 @@ button:hover {
   justify-content: space-between;
 }
 
-.form-actions button {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
 .form-actions button:first-child {
-  background-color: #007bff;
-  color: white;
+  background-color: #42a5f5;
 }
 
 .form-actions button:last-child {
   background-color: #f44336;
-  color: white;
 }
 
-
-/* Styling for item input container */
-.item-input-container {
-  display: flex;
-  justify-content: space-between; /* Ensures equal spacing */
-  align-items: center; /* Aligns items vertically in the center */
-  margin: 10px 0;
-  gap: 10px; /* Adds space between the inputs */
-}
-
-/* Styling for each input field */
-.item-input-container input[type="text"],
-.item-input-container input[type="number"] {
-  flex: 1; /* Equal width for both inputs */
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Add some spacing between input fields */
-.item-input-container input[type="number"] {
-  margin-left: 10px; /* Small gap between text and number inputs */
-}
-
-
+/* Search Bar */
 .search-bar {
   position: fixed;
   display: block;
   margin: 50px auto;
   width: 80%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Item Input Container */
+.item-input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.item-input-container input[type="text"],
+.item-input-container input[type="number"] {
+  flex: 1;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid #d0d7de;
   border-radius: 4px;
+  background-color: #fefefe;
+}
+
+.item-input-container input[type="number"] {
+  margin-left: 10px;
 }
