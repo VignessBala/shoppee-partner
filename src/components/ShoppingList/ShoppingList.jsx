@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Icons } from "../../constants/icons";
 import Header from "../Header";
+import "./styles/ShoppingList.css";
 
 const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
   const [listName, setListName] = useState("");
@@ -43,22 +44,21 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
   const handleAddItem = (listId) => {
     const { itemName, quantity } = itemInputs[listId] || {
       itemName: "",
-      quantity: 1,
+      quantity: 0,
     };
 
-    if (
-      !validateField(
-        `itemName-${listId}`,
-        itemName,
-        "Item name cannot be empty"
-      ) ||
-      !validateField(
-        `quantity-${listId}`,
-        quantity,
-        "Quantity must be at least 1"
-      )
-    )
-      return;
+    const isItemNameValid = validateField(
+      `itemName-${listId}`,
+      itemName,
+      "Item name cannot be empty"
+    );
+    const isQuantityValid = validateField(
+      `quantity-${listId}`,
+      quantity,
+      "Quantity must be at least 1"
+    );
+
+    if (!isItemNameValid || !isQuantityValid) return;
 
     if (editingItem && editingItem.listId === listId) {
       handleSaveEditItem(listId, editingItem.id, itemName, quantity);
@@ -86,7 +86,7 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
     setShoppingLists(updatedLists);
     setItemInputs((prev) => ({
       ...prev,
-      [listId]: { itemName: "", quantity: 1 },
+      [listId]: { itemName: "", quantity: 0 },
     }));
   };
 
@@ -118,7 +118,7 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
       }
       return list;
     });
-
+    setValidationErrors({});
     setShoppingLists(updatedLists);
     setEditingItem(null);
   };
@@ -189,20 +189,36 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const highlightSearch = (text, query) => {
+    if (!query) return text;
+
+    const regex = new RegExp(`(${query})`, "i"); // Match the query, case-insensitive
+    const parts = text.split(regex);
+
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <span key={index} className="text-[#cc3366] font-bold">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
 
   return (
     <div className="container mx-auto p-4">
-      <Header headerName="Shopping List" />
+      {/* <Header headerName="Shopping List" /> */}
       <button
         className="fixed top-4 right-4 border border-[#cc3366] text-[#cc3366] bg-transparent px-4 py-2 rounded hover:bg-[#cc3366] hover:text-white transition-colors duration-300"
         onClick={openForm}
       >
         Add List
       </button>
-      <div className="fixed top-16 w-11/12 mx-auto p-2 border rounded flex items-center">
+      <div className="search-bar-container fixed top-16 mx-auto p-2 border rounded flex items-center z-10">
         <img src={Icons.searchIcon} alt="Search" className="w-5 h-5 mr-2" />
         <input
-          className="flex-grow p-2 border rounded focus-visible:outline-none focus:border-[#cc3366]"
+          className="search-bar flex-grow p-2 border rounded focus-visible:outline-none focus:border-[#cc3366]"
           type="text"
           placeholder="Search lists..."
           value={searchQuery}
@@ -246,7 +262,7 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
         </div>
       )}
 
-      <div className="mt-24 overflow-auto max-h-[520px] bg-white shadow-md rounded">
+      <div className="mt-24 overflow-auto max-h-[520px] md:max-h-[520px] max-h-[480px] bg-white shadow-md rounded">
         <table className="table-auto w-full">
           <thead className="bg-gray-200">
             <tr>
@@ -269,20 +285,22 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
             ) : (
               paginatedLists.map((list, index) => (
                 <tr key={list.id} className="border-b">
-                  <td className="px-4 py-2">
+                  <td data-label="List Number" className="px-4 py-2">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                  <td className="px-4 py-2">{list.name}</td>
-                  <td className="px-4 py-2">
+                  <td data-label="List Name" className="px-4 py-2">
+                    {highlightSearch(list.name, searchQuery)}
+                  </td>
+                  <td data-label="Items" className="px-4 py-2">
                     <div>
-                      <div className="mb-2 flex items-center space-x-2">
+                      <div className="mb-2 flex flex-col space-y-1">
                         <input
                           ref={
                             editingItem?.listId === list.id
                               ? itemInputRef
                               : null
                           }
-                          className="border p-1 rounded"
+                          className="border p-1 rounded w-25"
                           type="text"
                           placeholder="Item Name"
                           value={
@@ -303,14 +321,22 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
                                 )
                           }
                         />
+                        {validationErrors[`itemName-${list.id}`] && (
+                          <small className="text-red-500 text-xs italic mt-1">
+                            {validationErrors[`itemName-${list.id}`]}
+                          </small>
+                        )}
+                      </div>
+
+                      <div className="mb-2 flex flex-col space-y-1">
                         <input
-                          className="border p-1 rounded w-20"
+                          className="border p-1 rounded w-25"
                           type="number"
                           placeholder="Quantity"
                           value={
                             editingItem?.listId === list.id && editingItem?.id
-                              ? editingItem.quantity
-                              : itemInputs[list.id]?.quantity || 1
+                              ? editingItem.quantity || ""
+                              : itemInputs[list.id]?.quantity || ""
                           }
                           onChange={(e) =>
                             editingItem?.listId === list.id && editingItem?.id
@@ -325,9 +351,17 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
                                 )
                           }
                         />
+                        {validationErrors[`quantity-${list.id}`] && (
+                          <small className="text-red-500 text-xs italic mt-1">
+                            {validationErrors[`quantity-${list.id}`]}
+                          </small>
+                        )}
+                      </div>
+
+                      <div className="flex items-center space-x-2">
                         <button
                           className={
-                            "border border-[#cc3366] text-[#cc3366] bg-transparent hover:bg-[#cc3366] hover:text-white   px-2 rounded transition-colors duration-300"
+                            "border border-[#cc3366] text-[#cc3366] bg-transparent hover:bg-[#cc3366] hover:text-white px-2 rounded transition-colors duration-300"
                           }
                           onClick={() => {
                             if (
@@ -359,82 +393,81 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
                           </button>
                         )}
                       </div>
+
                       {list.items.length === 0 ? (
                         <p className="text-gray-500 italic">No items</p>
                       ) : (
-                        <ul className="list-disc pl-4">
-                          {list.items.map((item, idx) => (
-                            <React.Fragment key={item.id}>
-                              <li className="flex justify-between items-center">
-                                <div className="flex items-center space-x-2">
-                                  <input
-                                    type="checkbox"
-                                    checked={item.bought}
-                                    onChange={() =>
-                                      toggleBought(list.id, item.id)
-                                    }
-                                    className="accent-[#ec4d82]"
+                        <ul className="list-disc w-full mt-5">
+                          {list.items.map((item) => (
+                            <li
+                              key={item.id}
+                              className="flex justify-between items-center mb-2 p-2 border rounded w-full"
+                            >
+                              <div className="flex items-center flex-grow">
+                                <input
+                                  type="checkbox"
+                                  checked={item.bought}
+                                  onChange={() =>
+                                    toggleBought(list.id, item.id)
+                                  }
+                                  className="mr-4 custom-checkbox"
                                   />
-                                  <span
-                                    className={`${
-                                      item.bought
-                                        ? "line-through text-gray-500"
-                                        : ""
-                                    }`}
-                                  >
-                                    {item.name} ({item.quantity})
-                                  </span>
-                                </div>
-                                <div className="space-x-2">
-                                  <button
-                                    className="text-white px-2 rounded hover:bg-green-100"
-                                    onClick={() => {
-                                      setEditingItem({
-                                        id: item.id,
-                                        listId: list.id,
-                                        name: item.name,
-                                        quantity: item.quantity,
-                                      });
-                                      setTimeout(() => {
-                                        if (itemInputRef.current) {
-                                          itemInputRef.current.scrollIntoView({
-                                            behavior: "smooth",
-                                          });
-                                          itemInputRef.current.focus();
-                                        }
-                                      }, 0);
-                                    }}
-                                  >
-                                    <img
-                                      src={Icons.editIcon}
-                                      alt="Edit"
-                                      className="w-4 h-4"
-                                    />
-                                  </button>
-                                  <button
-                                    className="text-white px-2 rounded hover:bg-red-100"
-                                    onClick={() =>
-                                      handleDeleteItem(list.id, item.id)
-                                    }
-                                  >
-                                    <img
-                                      src={Icons.deleteIcon}
-                                      alt="Delete"
-                                      className="w-4 h-4"
-                                    />
-                                  </button>
-                                </div>
-                              </li>
-                              {idx < list.items.length - 1 && (
-                                <hr className="border-gray-200 my-2" />
-                              )}
-                            </React.Fragment>
+                                <span
+                                  className={`${
+                                    item.bought
+                                      ? "line-through text-gray-500 flex-grow"
+                                      : "text-black flex-grow"
+                                  }`}
+                                >
+                                  "{item.name} ({item.quantity})"
+                                </span>
+                              </div>
+                              <div className="flex items-center space-x-2 justify-end">
+                                <button
+                                  className="p-2 hover:bg-green-100 rounded"
+                                  onClick={() => {
+                                    setEditingItem({
+                                      id: item.id,
+                                      listId: list.id,
+                                      name: item.name,
+                                      quantity: item.quantity,
+                                    });
+                                    setTimeout(() => {
+                                      if (itemInputRef.current) {
+                                        itemInputRef.current.scrollIntoView({
+                                          behavior: "smooth",
+                                        });
+                                        itemInputRef.current.focus();
+                                      }
+                                    }, 0);
+                                  }}
+                                >
+                                  <img
+                                    src={Icons.editIcon}
+                                    alt="Edit"
+                                    className="w-5 h-5"
+                                  />
+                                </button>
+                                <button
+                                  className="p-2 hover:bg-red-100 rounded"
+                                  onClick={() =>
+                                    handleDeleteItem(list.id, item.id)
+                                  }
+                                >
+                                  <img
+                                    src={Icons.deleteIcon}
+                                    alt="Delete"
+                                    className="w-5 h-5"
+                                  />
+                                </button>
+                              </div>
+                            </li>
                           ))}
                         </ul>
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-2">
+                  <td data-label="Actions" className="px-4 py-2">
                     <button
                       className=" text-white px-2 rounded hover:bg-red-100"
                       onClick={() => handleDeleteList(list.id)}
@@ -459,8 +492,8 @@ const ShoppingList = ({ shoppingLists, setShoppingLists }) => {
             key={index + 1}
             className={`px-4 py-2 border rounded ${
               currentPage === index + 1
-                ? "bg-[#cc3366] text-white"
-                : "bg-gray-200 hover:bg-gray-300"
+                ? "border border-[#cc3366] bg-[#cc3366] text-white hover:bg-transparent hover:text-[#cc3366]"
+                : "border border-[#cc3366] text-[#cc3366] bg-transparent hover:bg-[#cc3366] hover:text-white px-2 rounded transition-colors duration-300"
             }`}
             onClick={() => changePage(index + 1)}
           >

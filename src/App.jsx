@@ -11,6 +11,7 @@ import Signup from "./components/Auth/Signup";
 import ShoppingList from "./components/ShoppingList/ShoppingList";
 import Profile from "./components/Profiles/Profile";
 import "./App.css";
+import { Icons } from "./constants/icons";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -23,6 +24,7 @@ const App = () => {
     return JSON.parse(localStorage.getItem("shoppingLists")) || [];
   });
   const [loading, setLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,10 +44,24 @@ const App = () => {
     };
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSidebarOpen(window.innerWidth > 768); // Show sidebar on desktop
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleLogin = (loggedInUser) => {
     localStorage.setItem("isLoggedIn", true);
     setIsLoggedIn(true);
     setUser(loggedInUser);
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    }
   };
 
   const handleLogout = () => {
@@ -92,38 +108,65 @@ const App = () => {
 
   return (
     <div className={`flex h-screen ${isLoggedIn ? "" : "overflow-hidden"}`}>
-      {isLoggedIn && (
-        <aside className="w-64 bg-gray-100 shadow-md fixed h-full flex flex-col p-4">
-          <h2 className="text-xl font-bold mb-4">Menu</h2>
-          <ul className="space-y-4 flex-grow">
-            <li>
-              <div
-                className="ripple-container"
-                onClick={(e) => handleRippleEffect(e)}
-              >
-                <Link
-                  to="/profile"
-                  className="block bg-gray-200 rounded px-4 py-2 hover:bg-gray-300"
+      {isLoggedIn && isSidebarOpen && (
+        <aside
+          className={`w-64 bg-gray-100 shadow-md fixed h-full flex flex-col p-4 ${
+            isSidebarOpen ? "open" : "closed"
+          }`}
+        >
+          {/* Close icon for mobile view */}
+          <button
+            className="bg-gray-200 p-2 rounded-md shadow-md z-50 md:hidden mb-4"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <img src={Icons.closeIcon} alt="Close Menu" className="h-6 w-6" />
+          </button>
+
+          {/* Sidebar menu */}
+          <div className="flex flex-col flex-grow">
+            <h2 className="text-xl font-bold mb-4 hidden md:block">Menu</h2>
+            <ul className="space-y-4">
+              <li>
+                <div
+                  className="ripple-container"
+                  onClick={(e) => handleRippleEffect(e)}
                 >
-                  Profile
-                </Link>
-              </div>
-            </li>
-            <li>
-              <div
-                className="ripple-container"
-                onClick={(e) => handleRippleEffect(e)}
-              >
-                <Link
-                  to="/shopping-lists"
-                  className="block bg-gray-200 rounded px-4 py-2 hover:bg-gray-300"
+                  <Link
+                    to="/profile"
+                    className="block bg-gray-200 rounded px-4 py-2 hover:bg-gray-300"
+                    onClick={() => {
+                      if (window.innerWidth < 768) {
+                        setIsSidebarOpen(false); // Close sidebar only in mobile view
+                      }
+                    }}
+                  >
+                    Profile
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <div
+                  className="ripple-container"
+                  onClick={(e) => handleRippleEffect(e)}
                 >
-                  Shopping List
-                </Link>
-              </div>
-            </li>
-          </ul>
-          <div className="mt-auto space-y-4">
+                  <Link
+                    to="/shopping-lists"
+                    className="block bg-gray-200 rounded px-4 py-2 hover:bg-gray-300"
+                    onClick={() => {
+                      if (window.innerWidth < 768) {
+                        setIsSidebarOpen(false); // Close sidebar only in mobile view
+                      }
+                    }}
+                  >
+                    Shopping List
+                  </Link>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* Action buttons */}
+          <div className="mt-4 space-y-4">
             <button
               onClick={handleDeleteData}
               className="w-full bg-yellow-500 text-white font-bold py-2 rounded hover:bg-yellow-600"
@@ -146,9 +189,22 @@ const App = () => {
 
       <main
         className={`flex-grow p-6 ${
-          isLoggedIn ? "ml-64" : ""
+          isLoggedIn && isSidebarOpen ? "ml-64" : ""
         } overflow-y-auto bg-gray-50`}
       >
+        {isLoggedIn && (
+          <button
+            className="fixed top-4 left-4 bg-gray-200 p-2 rounded-md shadow-md z-50 md:hidden"
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+          >
+            {isSidebarOpen ? (
+              <img src={Icons.closeIcon} alt="Close Menu" className="h-6 w-6" />
+            ) : (
+              <img src={Icons.menuIcon} alt="Open Menu" className="h-6 w-6" />
+            )}
+          </button>
+        )}
+
         <Routes>
           <Route path="/" element={<Login setUser={handleLogin} />} />
           <Route path="/signup" element={<Signup />} />
