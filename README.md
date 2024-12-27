@@ -56,8 +56,6 @@ Follow these steps to set up and run the project locally:
    ```bash
    npm run dev
 
-
-
 ## What to Do as a User
 
 ### Creating a User and Login
