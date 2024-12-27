@@ -139,6 +139,21 @@
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
+  /* Overlay for the sidebar */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+    z-index: 99; /* Ensure it appears above other elements but below the sidebar */
+    display: none; /* Hide by default */
+  }
+
+  .sidebar-overlay.open {
+    display: block; /* Show overlay when sidebar is open */
+  }
   aside {
     width: 100%; /* Full width in mobile */
     position: fixed;

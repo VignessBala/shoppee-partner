@@ -109,6 +109,13 @@ const App = () => {
   return (
     <div className={`flex h-screen ${isLoggedIn ? "" : "overflow-hidden"}`}>
       {isLoggedIn && isSidebarOpen && (
+        <div
+          className="sidebar-overlay open"
+          onClick={() => setIsSidebarOpen(false)} // Close sidebar when clicking outside
+        ></div>
+      )}
+
+      {isLoggedIn && (
         <aside
           className={`w-64 bg-gray-100 shadow-md fixed h-full flex flex-col p-4 ${
             isSidebarOpen ? "open" : "closed"
